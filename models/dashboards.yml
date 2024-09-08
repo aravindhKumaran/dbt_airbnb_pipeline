@@ -1,0 +1,15 @@
+version: 2
+
+exposures:
+  - name: Executive Dashboard
+    type: dashboard
+    maturity: low
+    url: https://94ea2e5b.us1a.app.preset.io/superset/dashboard/p/wea1gORLnqP/
+    description: Executive Dashboard about Airbnb listings and hosts
+
+    depends_on:
+      - ref('dim_listings_w_hosts')
+      - ref('mart_fullmoon_reviews')
+
+    owner:
+      name: Aravindh
