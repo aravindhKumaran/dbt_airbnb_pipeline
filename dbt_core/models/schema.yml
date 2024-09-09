@@ -2,7 +2,9 @@ version: 2
 
 models:
 
+#############################
 # dim_listings_cleansed model
+#############################
   - name: dim_listings_cleansed # generic data_data_tests
     description: Cleansed table which contains Airbnb listings.
     columns:
@@ -32,7 +34,35 @@ models:
           - positive_value # custom generic test written in macro
 
 
+
+##########################
+# dim_hosts_cleansed model
+##########################
+  - name: dim_hosts_cleansed
+    description: Cleansed table for the Airbnb hosts
+    columns:
+      - name: host_id
+        description: The id of the host. This is the primary key.
+        data_tests:
+          - not_null
+          - unique
+      
+      - name: host_name
+        description: The name of the host
+        data_tests:
+          - not_null
+      
+      - name: is_superhost
+        description: Defines whether the hosts is a superhost.
+        data_tests:
+          - accepted_values:
+              values: ['t', 'f']
+
+
+
+#############################
 # dim_listings_w_hosts model
+#############################
   - name: dim_listings_w_hosts
     description: Tested the model using Great Expectations package.
     data_tests:
@@ -52,6 +82,25 @@ models:
               config:
                 severity: warn
 
-   
 
+
+#############################
+# fct_reviews model
+#############################
+  - name: fct_reviews
+    columns:
+      - name: listing_id
+        data_tests:
+          - relationships:
+              to: ref('dim_listings_cleansed')
+              field: listing_id
+
+      - name: reviewer_name
+        data_tests:
+          - not_null
+      
+      - name: review_sentiment
+        data_tests:
+          - accepted_values:
+              values: ['positive', 'neutral', 'negative']
 
