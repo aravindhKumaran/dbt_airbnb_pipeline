@@ -1,4 +1,4 @@
-# AirBNB Data Analytics Pipeline using DBT, Snowflake and Dagster
+# Airbnb Data Analytics Pipeline using DBT, Snowflake and Dagster
 
 ## Objective
 
