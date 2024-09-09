@@ -21,7 +21,7 @@ This project demonstrates a comprehensive data analytics solution using modern d
 ### 1. Input Schema
 The input schema represents the raw data structure from Airbnb, which is loaded into Snowflake.
 
-![Schema](dbt_core/assets/input_schema.png)
+<img src="dbt_core/assets/input_schema.png" alt="Input Schema" height="300">
 
 ### 2. DBT Modeling
 The DBT modeling shows the lineage of transformations applied to the raw data, including incremental loads and SCDs.
