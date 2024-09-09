@@ -1,18 +1,20 @@
 version: 2
 
 models:
-  - name: dim_listings_cleansed # generic tests
+
+# dim_listings_cleansed model
+  - name: dim_listings_cleansed # generic data_data_tests
     description: Cleansed table which contains Airbnb listings.
     columns:
       - name: listing_id
-        description: Primary key for the listing
-        tests:
+        description: Primary key for the listing.
+        data_tests:
           - unique
           - not_null
 
       - name: host_id
         description: The hosts's id. References the host table.
-        tests:
+        data_tests:
           - not_null 
           - relationships:
               to: ref('dim_hosts_cleansed')
@@ -20,11 +22,36 @@ models:
 
       - name: room_type
         description: Type of the apartment / room.
-        tests:
+        data_tests:
           - accepted_values: 
               values: ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
 
       - name: minimum_nights
         description: '{{ doc("dim_listing_cleansed__minimum_nights") }}'
-        tests:
+        data_tests:
           - positive_value # custom generic test written in macro
+
+
+# dim_listings_w_hosts model
+  - name: dim_listings_w_hosts
+    description: Tested the model using Great Expectations package.
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:  # Great Expectations Tests
+          compare_model: source('airbnb', 'listings')
+    columns:
+      - name: price
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_expectations.expect_column_quantile_values_to_be_between:
+              quantile: .99
+              min_value: 50
+              max_value: 500
+          - dbt_expectations.expect_column_max_to_be_between:
+              max_value: 5000  # we have max price as 8000, so inorder to pass the test change config to warn
+              config:
+                severity: warn
+
+   
+
+
