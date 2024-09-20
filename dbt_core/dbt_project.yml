@@ -26,8 +26,8 @@ models:
     +post-hook:
       - "GRANT SELECT ON {{ this }} TO ROLE REPORTER"
     src:
-      +materialized: table
+      +materialized: view
     dim:
       +materialized: table
     mart:
-      +materialized: ephemeral
+      +materialized: table
